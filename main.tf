@@ -42,6 +42,7 @@ data "intersight_server_profile_template" "templates" {
   name     = each.value.name
 }
 
+
 #__________________________________________________________________
 #
 # Intersight Syslog Policy
@@ -58,7 +59,13 @@ locals {
 }
 
 resource "intersight_syslog_policy" "syslog" {
-  description = var.description
+  depends_on = [
+    data.intersight_fabric_switch_profile.profiles,
+    data.intersight_server_profile.profiles,
+    data.intersight_server_profile_template.templates,
+    data.intersight_organization_organization.org_moid
+  ]
+  description = var.description != "" ? var.description : "${var.name} Syslog Policy."
   name        = var.name
   local_clients {
     min_severity = var.local_min_severity

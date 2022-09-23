@@ -45,12 +45,12 @@ variable "organization" {
 variable "profiles" {
   default     = []
   description = <<-EOT
-  Map of Profiles to Assign to the Policy.
-  * name - Managed Object Identifier for the Managed Resource.
-  * object_type - Object Type to Assign in the Profile Configuration.
-    - fabric.SwitchProfile - For UCS Domain Switch Profiles.
-    - server.Profile - For UCS Server Profiles.
-    - server.ProfileTemplate - For UCS Server Profile Templates.
+    List of Profiles to Assign to the Policy.
+    * name - Name of the Profile to Assign.
+    * object_type - Object Type to Assign in the Profile Configuration.
+      - fabric.SwitchProfile - For UCS Domain Switch Profiles.
+      - server.Profile - For UCS Server Profiles.
+      - server.ProfileTemplate - For UCS Server Profile Templates.
   EOT
   type = list(object(
     {
