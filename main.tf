@@ -49,15 +49,6 @@ data "intersight_server_profile_template" "templates" {
 # GUI Location: Policies > Create Policy > Syslog
 #__________________________________________________________________
 
-locals {
-  profiles = {
-    for v in var.profiles : v.name => {
-      name        = v.name
-      object_type = v.object_type != null ? v.object_type : "server.Profile"
-    }
-  }
-}
-
 resource "intersight_syslog_policy" "syslog" {
   depends_on = [
     data.intersight_fabric_switch_profile.profiles,
@@ -89,20 +80,12 @@ resource "intersight_syslog_policy" "syslog" {
   dynamic "remote_clients" {
     for_each = { for k, v in var.remote_clients : k => v }
     content {
-      enabled = length(
-        compact([remote_clients.value.enabled])
-      ) > 0 ? remote_clients.value.enabled : false
-      hostname = remote_clients.value.hostname
-      port = length(
-        compact([remote_clients.value.port])
-      ) > 0 ? remote_clients.value.port : 514
-      protocol = length(
-        compact([remote_clients.value.protocol])
-      ) > 0 ? remote_clients.value.protocol : "udp"
-      min_severity = length(
-        compact([remote_clients.value.min_severity])
-      ) > 0 ? remote_clients.value.min_severity : "warning"
-      object_type = "syslog.RemoteLoggingClient"
+      enabled      = remote_clients.value.enabled
+      hostname     = remote_clients.value.hostname
+      port         = remote_clients.value.port
+      protocol     = remote_clients.value.protocol
+      min_severity = remote_clients.value.min_severity
+      object_type  = "syslog.RemoteLoggingClient"
     }
   }
   dynamic "tags" {

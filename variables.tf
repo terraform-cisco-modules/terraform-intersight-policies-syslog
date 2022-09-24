@@ -1,7 +1,3 @@
-terraform {
-  experiments = [module_variable_optional_attrs]
-}
-
 #____________________________________________________________
 #
 # Syslog Policy Variables Section.
@@ -55,7 +51,7 @@ variable "profiles" {
   type = list(object(
     {
       name        = string
-      object_type = string
+      object_type = optional(string, "server.Profile")
     }
   ))
 }
@@ -64,7 +60,7 @@ variable "remote_clients" {
   default     = []
   description = <<-EOT
     NOTE: You can configure up to 2 remote syslog servers.
-    * enabled: (default is false) - Enables/disables remote logging for the endpoint If enabled, log messages will be sent to the syslog server mentioned in the Hostname/IP Address field.
+    * enabled: (default is true) - Enables/disables remote logging for the endpoint If enabled, log messages will be sent to the syslog server mentioned in the Hostname/IP Address field.
     * hostname: (required) - Hostname or IP Address of the syslog server where log should be stored.
     * min_severity: (default is warning) - Lowest level of messages to be included in the local log.
       - warning - Use logging level warning for logs classified as warning.
@@ -82,11 +78,11 @@ variable "remote_clients" {
   EOT
   type = list(object(
     {
-      enabled      = optional(bool)
+      enabled      = optional(bool, false)
       hostname     = string
-      min_severity = optional(string)
-      port         = optional(number)
-      protocol     = optional(string)
+      min_severity = optional(string, "warning")
+      port         = optional(number, 514)
+      protocol     = optional(string, "udp")
     }
   ))
 }
