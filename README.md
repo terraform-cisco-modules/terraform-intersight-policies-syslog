@@ -68,19 +68,19 @@ provider "intersight" {
 }
 ```
 
-### Environment Variables
+## Environment Variables
 
-Terraform Cloud/Enterprise - Workspace Variables
+### Terraform Cloud/Enterprise - Workspace Variables
 - Add variable apikey with value of [your-api-key]
 - Add variable secretkey with value of [your-secret-file-content]
 
-Linux
+### Linux
 ```bash
 export TF_VAR_apikey="<your-api-key>"
 export TF_VAR_secretkey=`cat <secret-key-file-location>`
 ```
 
-Windows
+### Windows
 ```bash
 $env:TF_VAR_apikey="<your-api-key>"
 $env:TF_VAR_secretkey="<secret-key-file-location>""
@@ -108,7 +108,7 @@ $env:TF_VAR_secretkey="<secret-key-file-location>""
 | <a name="input_name"></a> [name](#input\_name) | Name for the Policy. | `string` | `"default"` | no |
 | <a name="input_local_min_severity"></a> [local\_min\_severity](#input\_local\_min\_severity) | Lowest level of messages to be included in the local log.<br>  - warning - Use logging level warning for logs classified as warning.<br>  - emergency - Use logging level emergency for logs classified as emergency.<br>  - alert - Use logging level alert for logs classified as alert.<br>  - critical - Use logging level critical for logs classified as critical.<br>  - error - Use logging level error for logs classified as error.<br>  - notice - Use logging level notice for logs classified as notice.<br>  - informational - Use logging level informational for logs classified as informational.<br>  - debug - Use logging level debug for logs classified as debug. | `string` | `"warning"` | no |
 | <a name="input_organization"></a> [organization](#input\_organization) | Intersight Organization Name to Apply Policy to.  https://intersight.com/an/settings/organizations/. | `string` | `"default"` | no |
-| <a name="input_profiles"></a> [profiles](#input\_profiles) | Map of Profiles to Assign to the Policy.<br>* name - Managed Object Identifier for the Managed Resource.<br>* object\_type - Object Type to Assign in the Profile Configuration.<br>  - fabric.SwitchProfile - For UCS Domain Switch Profiles.<br>  - server.Profile - For UCS Server Profiles.<br>  - server.ProfileTemplate - For UCS Server Profile Templates. | <pre>list(object(<br>    {<br>      name        = string<br>      object_type = string<br>    }<br>  ))</pre> | `[]` | no |
+| <a name="input_profiles"></a> [profiles](#input\_profiles) | List of Profiles to Assign to the Policy.<br>* name - Name of the Profile to Assign.<br>* object\_type - Object Type to Assign in the Profile Configuration.<br>  - fabric.SwitchProfile - For UCS Domain Switch Profiles.<br>  - server.Profile - For UCS Server Profiles.<br>  - server.ProfileTemplate - For UCS Server Profile Templates. | <pre>list(object(<br>    {<br>      name        = string<br>      object_type = string<br>    }<br>  ))</pre> | `[]` | no |
 | <a name="input_remote_clients"></a> [remote\_clients](#input\_remote\_clients) | NOTE: You can configure up to 2 remote syslog servers.<br>* enabled: (default is false) - Enables/disables remote logging for the endpoint If enabled, log messages will be sent to the syslog server mentioned in the Hostname/IP Address field.<br>* hostname: (required) - Hostname or IP Address of the syslog server where log should be stored.<br>* min\_severity: (default is warning) - Lowest level of messages to be included in the local log.<br>  - warning - Use logging level warning for logs classified as warning.<br>  - emergency - Use logging level emergency for logs classified as emergency.<br>  - alert - Use logging level alert for logs classified as alert.<br>  - critical - Use logging level critical for logs classified as critical.<br>  - error - Use logging level error for logs classified as error.<br>  - notice - Use logging level notice for logs classified as notice.<br>  - informational - Use logging level informational for logs classified as informational.<br>  - debug - Use logging level debug for logs classified as debug.<br>* port: (default is 514) - Range 1-65535.  Port number used for logging on syslog server.<br>* protocol: (default is udp) - Transport layer protocol for transmission of log messages to syslog server.<br>  - tcp - Use Transmission Control Protocol (TCP) for syslog remote server connection.<br>  - udp - Use User Datagram Protocol (UDP) for syslog remote server connection. | <pre>list(object(<br>    {<br>      enabled      = optional(bool)<br>      hostname     = string<br>      min_severity = optional(string)<br>      port         = optional(number)<br>      protocol     = optional(string)<br>    }<br>  ))</pre> | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of Tag Attributes to Assign to the Policy. | `list(map(string))` | `[]` | no |
 ## Outputs
