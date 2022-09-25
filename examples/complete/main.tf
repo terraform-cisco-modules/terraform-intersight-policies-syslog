@@ -1,4 +1,4 @@
-module "syslog_policy" {
+module "syslog" {
   source  = "terraform-cisco-modules/policies-syslog/intersight"
   version = ">= 1.0.1"
 
