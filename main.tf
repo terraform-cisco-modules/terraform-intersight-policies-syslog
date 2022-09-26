@@ -20,8 +20,12 @@ data "intersight_organization_organization" "org_moid" {
 #____________________________________________________________
 
 data "intersight_fabric_switch_profile" "profiles" {
-  for_each = { for v in var.profiles : v => v if v.object_type == "fabric.SwitchProfile" }
-  name     = each.value
+  for_each = {
+    for v in var.profiles : v.name => v if v.object_type == "fabric.SwitchProfile" && length(
+      regexall("[[:xdigit:]]{24}", v.name)
+    ) == 0
+  }
+  name = each.value.name
 }
 
 
@@ -79,7 +83,9 @@ resource "intersight_syslog_policy" "syslog" {
     for_each = { for v in var.profiles : v.name => v }
     content {
       moid = length(regexall("fabric.SwitchProfile", profiles.value.object_type)
-        ) > 0 ? data.intersight_fabric_switch_profile.profiles[profiles.value.name].results[0
+        ) > 0 ? length(
+        regexall("[[:xdigit:]]{24}", profiles.value.name)
+        ) > 0 ? profiles.value.name : data.intersight_fabric_switch_profile.profiles[profiles.value.name].results[0
         ].moid : length(regexall("server.ProfileTemplate", profiles.value.object_type)
         ) > 0 ? data.intersight_server_profile_template.templates[profiles.value.name].results[0
       ].moid : data.intersight_server_profile.profiles[profiles.value.name].results[0].moid
