@@ -6,9 +6,7 @@
 
 data "intersight_organization_organization" "org_moid" {
   for_each = {
-    for v in [var.organization] : v => v if length(
-      regexall("[[:xdigit:]]{24}", var.organization)
-    ) == 0
+    for v in [var.organization] : v => v if var.moids == false
   }
   name = each.value
 }
@@ -21,9 +19,7 @@ data "intersight_organization_organization" "org_moid" {
 
 data "intersight_fabric_switch_profile" "profiles" {
   for_each = {
-    for v in var.profiles : v.name => v if v.object_type == "fabric.SwitchProfile" && length(
-      regexall("[[:xdigit:]]{24}", v.name)
-    ) == 0
+    for v in var.profiles : v.name => v if v.object_type == "fabric.SwitchProfile" && var.moids == false
   }
   name = each.value.name
 }
@@ -72,8 +68,7 @@ resource "intersight_syslog_policy" "syslog" {
     object_type  = "syslog.LocalFileLoggingClient"
   }
   organization {
-    moid = length(
-      regexall("[[:xdigit:]]{24}", var.organization)
+    moid = length(regexall(true, var.moids)
       ) > 0 ? var.organization : data.intersight_organization_organization.org_moid[
       var.organization].results[0
     ].moid
@@ -83,9 +78,8 @@ resource "intersight_syslog_policy" "syslog" {
     for_each = { for v in var.profiles : v.name => v }
     content {
       moid = length(regexall("fabric.SwitchProfile", profiles.value.object_type)
-        ) > 0 ? length(
-        regexall("[[:xdigit:]]{24}", profiles.value.name)
-        ) > 0 ? profiles.value.name : data.intersight_fabric_switch_profile.profiles[profiles.value.name].results[0
+        ) > 0 ? length(regexall(true, var.moids)) > 0 ? var.domain_profiles[profiles.value.name
+        ].moid : data.intersight_fabric_switch_profile.profiles[profiles.value.name].results[0
         ].moid : length(regexall("server.ProfileTemplate", profiles.value.object_type)
         ) > 0 ? data.intersight_server_profile_template.templates[profiles.value.name].results[0
       ].moid : data.intersight_server_profile.profiles[profiles.value.name].results[0].moid
