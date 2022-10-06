@@ -50,7 +50,7 @@ func TestFull(t *testing.T) {
 	expectedJSONTemplate := `
 {
 	"Name":        "{{ .name }}",
-	"Description": "{{ .name }} NTP Policy.",
+	"Description": "{{ .name }} Syslog Policy.",
 
 	"LocalClients": [
         {
