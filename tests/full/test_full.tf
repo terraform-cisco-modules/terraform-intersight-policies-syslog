@@ -34,11 +34,11 @@ module "main" {
   remote_clients = [
     {
       enabled  = true
-      hostname = "198.18.1.21"
+      hostname = "198.18.5.14"
     },
     {
       enabled  = true
-      hostname = "198.18.1.22"
+      hostname = "198.18.5.15"
     }
   ]
 }

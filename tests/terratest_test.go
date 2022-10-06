@@ -64,7 +64,7 @@ func TestFull(t *testing.T) {
           "ClassId": "syslog.RemoteLoggingClient",
           "Enabled": true,
           "Facility": "",
-          "Hostname": "10.101.128.24",
+          "Hostname": "198.18.5.14",
           "MinSeverity": "warning",
           "ObjectType": "syslog.RemoteLoggingClient",
           "Port": 514,
@@ -75,14 +75,14 @@ func TestFull(t *testing.T) {
           "ClassId": "syslog.RemoteLoggingClient",
           "Enabled": true,
           "Facility": "",
-          "Hostname": "10.101.128.25",
+          "Hostname": "198.18.5.15",
           "MinSeverity": "warning",
           "ObjectType": "syslog.RemoteLoggingClient",
           "Port": 514,
           "Protocol": "udp",
           "VrfName": ""
         }
-	],
+	]
 }
 `
 	// Validate that what is in the Intersight API matches the expected
